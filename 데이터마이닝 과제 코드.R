@@ -42,6 +42,8 @@ unique(df$property_type)
 # 11개 이상인 데이터만 뽑기
 df = df[df$number_of_reviews >= 11,]
 
+
+# 도시별로 가격 평균 나타내기 위해 따로 분리한다.
 unique(df$city)
 df_LA = df[df$city == 'LA',]
 df_SF = df[df$city == 'SF',]
@@ -51,8 +53,8 @@ df_Chicago = df[df$city == 'Chicago',]
 df_Boston = df[df$city == 'Boston',]
 a = df %>% group_by(city) %>%
       summarize(mean_city = mean(exp_price))
-a
 
+# 각 도시별로 가격비를 구현한 것. 
 v = c()
 for (i in df_LA$exp_price) {
   v = c(v, (i/a$mean_city[4])*100)
@@ -88,10 +90,144 @@ for (i in df_Boston$exp_price) {
   v = c(v, (i/a$mean_city[1])*100)
 }
 df_Boston$price_ratio = v
+
+# 최종적으로 데이터를 rbind로 합친다.
 df_final = rbind(df_LA,df_SF,df_NYC,df_DC,df_Chicago,df_Boston)
 df_final
 
+# 이 부분부터는 결측치를 처리하는 과정인데, 무조건적으로 0이나 평균을 넣는 것을 좋아하지 않음.
+# 따라서 이 부분에서 property_type과 room_type을 groupby해서 각각의 평균을 각각의 타입의 결측치에 넣어줬다.
+# bathroom
+bathroom = df %>%filter(!is.na(bathrooms)) %>% group_by(property_type,room_type) %>%
+  summarize(mean_bath = mean(bathrooms))
+bathroom
 
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$bathrooms),]$bathrooms)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$bathrooms),]$bathrooms)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & is.na(df_final$bathrooms),]$bathrooms = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms)
+
+# review_score
+review_score = df %>%filter(!is.na(review_scores_rating)) %>% group_by(property_type,room_type) %>%
+  summarize(mean_score = mean(review_scores_rating))
+review_score
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+#df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+ # mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+#df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+ # mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+#df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & is.na(df_final$review_scores_rating),]$review_scores_rating = 
+ # mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$review_scores_rating),]$review_scores_rating)
+
+
+# bedroom
+bedroom = df %>%filter(!is.na(bedrooms)) %>% group_by(property_type,room_type) %>%
+  summarize(mean_bedrooms = mean(bedrooms))
+bedroom
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & is.na(df_final$bedrooms),]$bedrooms = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bedrooms),]$bedrooms = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & is.na(df_final$bedrooms),]$bedrooms = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & is.na(df_final$bedrooms),]$bedrooms = 
+ mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bedrooms),]$bedrooms = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & is.na(df_final$bedrooms),]$bedrooms = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & is.na(df_final$bedrooms),]$bedrooms = 
+ mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bedrooms),]$bedrooms = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & is.na(df_final$bedrooms),]$bedrooms = 
+ mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms)
+
+
+# bed
+bed = df %>%filter(!is.na(beds)) %>% group_by(property_type,room_type) %>%
+  summarize(mean_bed = mean(beds))
+bed
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds)
+
+df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & is.na(df_final$beds),]$beds = 
+  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds)
+
+
+
+# 결측치 확인
+summary(df_final)
 
 ## 1. ##
 mean(df_final$price_ratio)
@@ -112,7 +248,7 @@ mypanel <- function(x, y) {
 xyplot(price_ratio~review_scores_rating|property_type,data=df_final,panel=mypanel)
 
 lm_df<-lm(price_ratio ~ property_type + bed_type + number_of_reviews + room_type + accommodates + review_scores_rating + number_of_reviews + host_response_rate +
-            city + , data=df_final)
+            city + bathrooms + review_scores_rating + bedrooms + beds + cancellation_policy + cleaning_fee + host_identity_verified + instant_bookable, data=df_final)
 summary(lm_df)
-
-unique(df_final$neighbourhood)
+plot(lm_df,which=2)
+plot(lm_df,which=1)
