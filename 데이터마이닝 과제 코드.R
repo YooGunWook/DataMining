@@ -245,10 +245,52 @@ mypanel <- function(x, y) {
   panel.loess(x, y, col="red", lwd=2, lty=2)
 }
 
-xyplot(price_ratio~review_scores_rating|property_type,data=df_final,panel=mypanel)
+xyplot(price_ratio~review_scores_rating|cancellation_policy,data=df_final,panel=mypanel)
 
-lm_df<-lm(price_ratio ~ property_type + bed_type + number_of_reviews + room_type + accommodates + review_scores_rating + number_of_reviews + host_response_rate +
-            city + bathrooms + review_scores_rating + bedrooms + beds + cancellation_policy + cleaning_fee + host_identity_verified + instant_bookable, data=df_final)
+lm_df<-lm(log(price_ratio) ~  property_type + bed_type  + room_type + accommodates + review_scores_rating + number_of_reviews + host_response_rate +
+            city + bathrooms + bedrooms + beds + cancellation_policy + cleaning_fee + host_identity_verified + instant_bookable + property_type:review_scores_rating
+          + cleaning_fee:review_scores_rating + city:review_scores_rating  + room_type:review_scores_rating
+          + city:number_of_reviews, data=df_final)
 summary(lm_df)
+# 잔차를 통해 비선형인것을 파악함. 따라서 y값에 log 변환 취함. 
+# 비선형이기 때문에 log변환을 통해 선형으로 바꿔준다. 
 plot(lm_df,which=2)
 plot(lm_df,which=1)
+
+hist(df_final$bathrooms)
+
+step_wise = step(lm_df, direction = 'both')
+summary(step_wise)
+
+## 결과는 나쁘지 않지만, 교호 작용을 통해 좀 더 성능을 높여보려고 한다. 
+# review_score_rating과 property_type, bed_type간에 어느정도 차이가 있는 것을 볼 수 있다. 이 변수를 교호작용
+xyplot(log(price_ratio)~review_scores_rating|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~review_scores_rating|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~review_scores_rating|room_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~review_scores_rating|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~review_scores_rating|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~review_scores_rating|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~review_scores_rating|city,data=df_final,panel=mypanel)
+
+
+xyplot(log(price_ratio)~number_of_reviews|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|city,data=df_final,panel=mypanel)
+
+
+xyplot(log(price_ratio)~number_of_reviews|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|city,data=df_final,panel=mypanel)
+
+
+boxplot(price_ratio~city ,data=df_final)
+
+summary(df_final)
+
+
