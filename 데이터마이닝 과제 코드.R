@@ -250,7 +250,9 @@ xyplot(price_ratio~review_scores_rating|cancellation_policy,data=df_final,panel=
 lm_df<-lm(log(price_ratio) ~  property_type + bed_type  + room_type + accommodates + review_scores_rating + number_of_reviews + host_response_rate +
             city + bathrooms + bedrooms + beds + cancellation_policy + cleaning_fee + host_identity_verified + instant_bookable + property_type:review_scores_rating
           + cleaning_fee:review_scores_rating + city:review_scores_rating  + room_type:review_scores_rating
-          + city:number_of_reviews, data=df_final)
+          + city:number_of_reviews + room_type:accommodates + city:host_response_rate + city:bathrooms
+          + property_type:bathrooms + room_type:bathrooms + host_identity_verified:bathrooms + instant_bookable:bathrooms
+          + property_type:bedrooms, data=df_final)
 summary(lm_df)
 # 잔차를 통해 비선형인것을 파악함. 따라서 y값에 log 변환 취함. 
 # 비선형이기 때문에 log변환을 통해 선형으로 바꿔준다. 
@@ -275,19 +277,56 @@ xyplot(log(price_ratio)~review_scores_rating|city,data=df_final,panel=mypanel)
 
 xyplot(log(price_ratio)~number_of_reviews|property_type,data=df_final,panel=mypanel)
 xyplot(log(price_ratio)~number_of_reviews|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|room_type,data=df_final,panel=mypanel)
 xyplot(log(price_ratio)~number_of_reviews|cleaning_fee,data=df_final,panel=mypanel)
 xyplot(log(price_ratio)~number_of_reviews|host_identity_verified,data=df_final,panel=mypanel)
 xyplot(log(price_ratio)~number_of_reviews|instant_bookable,data=df_final,panel=mypanel)
 xyplot(log(price_ratio)~number_of_reviews|city,data=df_final,panel=mypanel)
 
 
-xyplot(log(price_ratio)~number_of_reviews|property_type,data=df_final,panel=mypanel)
-xyplot(log(price_ratio)~number_of_reviews|bed_type,data=df_final,panel=mypanel)
-xyplot(log(price_ratio)~number_of_reviews|cleaning_fee,data=df_final,panel=mypanel)
-xyplot(log(price_ratio)~number_of_reviews|host_identity_verified,data=df_final,panel=mypanel)
-xyplot(log(price_ratio)~number_of_reviews|instant_bookable,data=df_final,panel=mypanel)
-xyplot(log(price_ratio)~number_of_reviews|city,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|room_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|city,data=df_final,panel=mypanel)
 
+
+xyplot(log(price_ratio)~host_response_rate|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~host_response_rate|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~host_response_rate|room_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~host_response_rate|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~host_response_rate|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~host_response_rate|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~host_response_rate|city,data=df_final,panel=mypanel)
+
+
+xyplot(log(price_ratio)~bathrooms|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bathrooms|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bathrooms|room_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bathrooms|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bathrooms|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bathrooms|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bathrooms|city,data=df_final,panel=mypanel)
+
+
+xyplot(log(price_ratio)~bedrooms|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bedrooms|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bedrooms|room_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bedrooms|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bedrooms|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bedrooms|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~bedrooms|city,data=df_final,panel=mypanel)
+
+
+xyplot(log(price_ratio)~beds|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~beds|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~beds|room_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~beds|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~beds|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~beds|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~beds|city,data=df_final,panel=mypanel)
 
 boxplot(price_ratio~city ,data=df_final)
 
