@@ -98,33 +98,34 @@ df_final
 # 이 부분부터는 결측치를 처리하는 과정인데, 무조건적으로 0이나 평균을 넣는 것을 좋아하지 않음.
 # 따라서 이 부분에서 property_type과 room_type을 groupby해서 각각의 평균을 각각의 타입의 결측치에 넣어줬다.
 # bathroom
+
 bathroom = df %>%filter(!is.na(bathrooms)) %>% group_by(property_type,room_type) %>%
   summarize(mean_bath = mean(bathrooms))
 bathroom
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$bathrooms),]$bathrooms))
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms))
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$bathrooms),]$bathrooms))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bathrooms),]$bathrooms))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & is.na(df_final$bathrooms),]$bathrooms = 
-  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms)
+  round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$bathrooms),]$bathrooms))
 
 # review_score
 review_score = df %>%filter(!is.na(review_scores_rating)) %>% group_by(property_type,room_type) %>%
@@ -165,31 +166,31 @@ bedroom = df %>%filter(!is.na(bedrooms)) %>% group_by(property_type,room_type) %
 bedroom
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & is.na(df_final$bedrooms),]$bedrooms = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bedrooms),]$bedrooms = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & is.na(df_final$bedrooms),]$bedrooms = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & is.na(df_final$bedrooms),]$bedrooms = 
- mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms)
+ round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bedrooms),]$bedrooms = 
-  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms)
+  round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & is.na(df_final$bedrooms),]$bedrooms = 
-  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms)
+  round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & is.na(df_final$bedrooms),]$bedrooms = 
- mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms)
+ round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & is.na(df_final$bedrooms),]$bedrooms = 
-  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms)
+  round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$bedrooms),]$bedrooms))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & is.na(df_final$bedrooms),]$bedrooms = 
- mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms)
+ round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$bedrooms),]$bedrooms))
 
 
 # bed
@@ -198,31 +199,31 @@ bed = df %>%filter(!is.na(beds)) %>% group_by(property_type,room_type) %>%
 bed
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'Apartment' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'House' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Shared room' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Entire home/apt' & !is.na(df_final$beds),]$beds))
 
 df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & is.na(df_final$beds),]$beds = 
-  mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds)
+  round(mean(df_final[df_final$property_type == 'Other' & df_final$room_type == 'Private room' & !is.na(df_final$beds),]$beds))
 
 
 
@@ -247,17 +248,25 @@ mypanel <- function(x, y) {
 
 xyplot(price_ratio~review_scores_rating|cancellation_policy,data=df_final,panel=mypanel)
 
-lm_df<-lm(log(price_ratio) ~  property_type + bed_type  + room_type + accommodates + review_scores_rating + number_of_reviews + host_response_rate +
+lm_df<-lm(log(price_ratio) ~ property_type + bed_type  + room_type + accommodates + review_scores_rating + number_of_reviews + host_response_rate +
             city + bathrooms + bedrooms + beds + cancellation_policy + cleaning_fee + host_identity_verified + instant_bookable + property_type:review_scores_rating
-          + cleaning_fee:review_scores_rating + city:review_scores_rating  + room_type:review_scores_rating
+          + cleaning_fee:review_scores_rating + city:review_scores_rating + room_type:review_scores_rating
           + city:number_of_reviews + room_type:accommodates + city:host_response_rate + city:bathrooms
-          + property_type:bathrooms + room_type:bathrooms + host_identity_verified:bathrooms + instant_bookable:bathrooms
-          + property_type:bedrooms, data=df_final)
+          + property_type:bathrooms + room_type:bathrooms + room_type:bedrooms + host_identity_verified:bathrooms + instant_bookable:bathrooms
+          + property_type:bedrooms + city:bedrooms + city:beds +review_scores_rating:bath_rooms_size + 
+            review_scores_rating:bedrooms_size + number_of_reviews:bath_rooms_size + number_of_reviews:bedrooms_size, data=df_final)
+
+
 summary(lm_df)
+summary(lm_df_price)
+
 # 잔차를 통해 비선형인것을 파악함. 따라서 y값에 log 변환 취함. 
 # 비선형이기 때문에 log변환을 통해 선형으로 바꿔준다. 
 plot(lm_df,which=2)
 plot(lm_df,which=1)
+
+plot(lm_df_price,which=2)
+plot(lm_df_price,which=1)
 
 hist(df_final$bathrooms)
 
@@ -328,8 +337,75 @@ xyplot(log(price_ratio)~beds|host_identity_verified,data=df_final,panel=mypanel)
 xyplot(log(price_ratio)~beds|instant_bookable,data=df_final,panel=mypanel)
 xyplot(log(price_ratio)~beds|city,data=df_final,panel=mypanel)
 
+
+xyplot(log(price_ratio)~log_price|property_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~log_price|bed_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~log_price|room_type,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~log_price|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~log_price|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~log_price|instant_bookable,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~log_price|city,data=df_final,panel=mypanel)
+
+
+# 잔차를 통해 좀 더 좋은 변수 찾아보기
+xyplot(lm_df$residuals~review_scores_rating|property_type,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~review_scores_rating|bed_type,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~review_scores_rating|room_type,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~review_scores_rating|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~review_scores_rating|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~review_scores_rating|instant_bookable,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~review_scores_rating|city,data=df_final,panel=mypanel)
+
+xyplot(lm_df$residuals~number_of_reviews|property_type,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~number_of_reviews|bed_type,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~number_of_reviews|room_type,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~number_of_reviews|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~number_of_reviews|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~number_of_reviews|instant_bookable,data=df_final,panel=mypanel)
+xyplot(lm_df$residuals~number_of_reviews|city,data=df_final,panel=mypanel)
+
+
+xyplot(lm_df_price$residuals~host_response_rate|property_type,data=df_final,panel=mypanel)
+xyplot(lm_df_price$residuals~host_response_rate|bed_type,data=df_final,panel=mypanel)
+xyplot(lm_df_price$residuals~host_response_rate|room_type,data=df_final,panel=mypanel)
+xyplot(lm_df_price$residuals~host_response_rate|cleaning_fee,data=df_final,panel=mypanel)
+xyplot(lm_df_price$residuals~host_response_rate|host_identity_verified,data=df_final,panel=mypanel)
+xyplot(lm_df_price$residuals~host_response_rate|instant_bookable,data=df_final,panel=mypanel)
+xyplot(lm_df_price$residuals~host_response_rate|city,data=df_final,panel=mypanel)
+
+
+
+# tree 써보자
+
+library(rpart)
+library(rpart.plot)
+
+# maximal tree
+tree1 = rpart(log(price_ratio) ~ property_type + bed_type  + room_type + accommodates + review_scores_rating + number_of_reviews + host_response_rate +
+                city + bathrooms + bedrooms + beds + cancellation_policy + cleaning_fee + host_identity_verified + instant_bookable, data = df_final, method="anova")
+prp(tree1, type=4, extra=1, digits=3)
+
+
+
+xyplot(log(price_ratio)~review_scores_rating|bath_rooms_size,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~review_scores_rating|bedrooms_size,data=df_final,panel=mypanel)
+
+xyplot(log(price_ratio)~number_of_reviews|bath_rooms_size,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~number_of_reviews|bedrooms_size,data=df_final,panel=mypanel)
+
+xyplot(log(price_ratio)~accommodates|bath_rooms_size,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~accommodates|bedrooms_size,data=df_final,panel=mypanel)
+
+xyplot(log(price_ratio)~host_response_rate|bath_rooms_size,data=df_final,panel=mypanel)
+xyplot(log(price_ratio)~host_response_rate|bedrooms_size,data=df_final,panel=mypanel)
+
 boxplot(price_ratio~city ,data=df_final)
 
 summary(df_final)
 
+df_final$bathrooms = round(df_final$bathrooms) 
 
+unique(df_final$host_identity_verified)
+colSums(is.na(df_final))
+
+unique(df_final$host_response_rate)
