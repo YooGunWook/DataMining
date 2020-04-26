@@ -9,6 +9,8 @@ dim(df)
 # unbalance data
 # 이상치가 부정하지 않은 사람에게 당연히 많을 수 밖에 없다. 따라서 그것을 감안해서 boxplot을 보도록 하자.
 a = table(df$Class)
+a['1']/(a['0']+a['1'])
+a['0']/(a['0']+a['1'])
 barplot(a)
 
 # check V1~V28, time and amount
@@ -230,6 +232,9 @@ train = df[i,]
 test = df[-i,]
 unique(train$Class)
 unique(test$Class)
+table(train$Class)
+table(test$Class)
+
 
 
 model_first = glm(Class~., family="binomial", data=train)
@@ -249,10 +254,10 @@ prob_pred2 = predict(step_model_for, newdata=test, type='response')
 prob_pred3 = predict(step_model_back, newdata=test, type='response')
 prob_pred4 = predict(step_model_both, newdata=test, type='response')
 
-pred1 <- ifelse(prob_pred1 < 0.5, 0, 1)
-pred2 <- ifelse(prob_pred2 < 0.5, 0, 1)
-pred3 <- ifelse(prob_pred3 < 0.5, 0, 1)
-pred4 <- ifelse(prob_pred4 < 0.5, 0, 1)
+pred1 <- ifelse(prob_pred1 < 0.0017, 0, 1)
+pred2 <- ifelse(prob_pred2 < 0.0017, 0, 1)
+pred3 <- ifelse(prob_pred3 < 0.0017, 0, 1)
+pred4 <- ifelse(prob_pred4 < 0.0017, 0, 1)
 
 # forward는 원래 모델과 큰 차이 없지만, backward와 both는 약간의 성능 향상이 있었다.
 # 여기서 both 모델 채택
@@ -261,7 +266,6 @@ F1_Score(y_pred = pred2, y_true = test$Class, positive = "1")
 F1_Score(y_pred = pred3, y_true = test$Class, positive = "1")
 F1_Score(y_pred = pred4, y_true = test$Class, positive = "1")
 
-summary(step_model_both)
 
 # 4번
 # 대부분 예상한대로 변수가 채택되었으나, 몇몇 변수를 보면 큰 차이가 없지만 유의미한 변수가 된 경우도 여럿 별 수 있다. 
@@ -287,18 +291,14 @@ exp(coef(step_model_both))
 # Amount가 1 증가하면 부정 사용자일 가능성이 약 1.001배 오르게 된다.
 
 # 6번 
-summary(model_first)
-coef(model_first)[1]
-summary(df)
+three_rd = apply(df, 2, quantile)
+three_rd
+q3 = three_rd['75%',]
+q3 = q3[1:30]
+q3 = data.frame(t(q3))
 
-
-
-
-
-
-
-
-
+prob_pred5 = predict(step_model_both, newdata=q3, type='response')
+prob_pred5
 
 
 
