@@ -7,6 +7,8 @@
 
 두번째 과제: Kaggle에 있는 creditfraud 데이터를 이용해서 로지스틱 회귀분석 하기. 
 
+세번째 과제: Directmail 데이터를 이용해서 lift chart와 profit chart 구현
+
 
 ~ 계속 진행 ~ 
 
